@@ -1,4 +1,4 @@
-# flutter_application_1
+# HieroScan App
 
 A new Flutter project.
 
