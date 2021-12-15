@@ -82,9 +82,19 @@ class _addState extends State<add> {
                     },
                   ),
                   showImage(),
+                  Container(
+                      width: 700.0,
+                      child: TextField(
+                        decoration: InputDecoration(
+                            labelText: "Translation",
+                            labelStyle: TextStyle(fontSize: 24),
+                            filled: true,
+                            fillColor: Colors.white70),
+                        style: TextStyle(fontSize: 32),
+                      ))
                 ],
               ),
-            )
+            ),
           ],
         ));
   }
