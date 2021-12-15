@@ -39,7 +39,7 @@ dependencies:
   image_picker_web: ^2.1.0
   file_picker: ^4.2.7
   open_file: any
-
+  transparent_image: ^2.0.0
 
 dev_dependencies:
   flutter_test:
