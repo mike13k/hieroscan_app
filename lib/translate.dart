@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:io';
+import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -6,6 +8,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter/services.dart' show rootBundle;
 
 class translatepage extends StatefulWidget {
   translatepage() : super();
@@ -37,6 +40,8 @@ class _translatepageState extends State<translatepage> {
   });
   late Future<TranslationResponse> futureTranslation;
   bool isFileSelected = false;
+  // bool isRandomImage = false;
+  // List imagePool = ['logo.jpg', 'wall.jpg'];
 
   @override
   void initState() {
@@ -44,18 +49,39 @@ class _translatepageState extends State<translatepage> {
     futureTranslation = translateImage(null);
   }
 
+  // Future<Uint8List> _readFileByte(String filePath) async {
+  //   File file = await rootBundle.load('assets/logo.jpg') as File;
+  //   Uint8List bytes = Uint8List.fromList([]);
+  //   await file.readAsBytes().then((value) {
+  //     bytes = Uint8List.fromList(value);
+  //   });
+  //   return bytes;
+  // }
+
   pickImage() async {
+    // if (isRandomImage) {
+    //   isRandomImage = false;
+    //   final _random = new Random();
+    //   var element = imagePool[_random.nextInt(imagePool.length)];
+    //   _readFileByte('assets/' + element).then((value) => setState(() {
+    //         imageFile = Future(() {
+    //           futureTranslation = translateImage(value);
+    //           return value as Uint8List;
+    //         });
+    //       }));
+    //   // var image = await rootBundle.load('assets/logo.jpg');
+
+    // } else {
     var file = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'png']);
     isFileSelected = true;
     setState(() {
-      // if (file != null) {
       imageFile = Future(() {
         futureTranslation = translateImage(file!.files.single.bytes);
         return file.files.single.bytes as Uint8List;
       });
-      // }
     });
+    // }
   }
 
   Widget showImage() {
@@ -120,6 +146,13 @@ class _translatepageState extends State<translatepage> {
                       pickImage();
                     },
                   ),
+                  // RaisedButton(
+                  //   child: Text('Try a sample image'),
+                  //   onPressed: () {
+                  //     isRandomImage = true;
+                  //     pickImage();
+                  //   },
+                  // ),
                   showImage(),
                   FutureBuilder<TranslationResponse>(
                     future: futureTranslation,
