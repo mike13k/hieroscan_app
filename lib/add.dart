@@ -3,8 +3,6 @@ import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
-import 'dart:io';
-import 'package:open_file/open_file.dart';
 import 'package:transparent_image/transparent_image.dart';
 
 class add extends StatefulWidget {
