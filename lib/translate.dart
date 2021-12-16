@@ -19,7 +19,6 @@ class translatepage extends StatefulWidget {
 }
 
 class TranslationResponse {
-  
   final String translation;
 
   TranslationResponse({
@@ -77,10 +76,10 @@ class _translatepageState extends State<translatepage> {
     isFileSelected = true;
     setState(() {
       imageFile = Future(() {
-        futureTranslation = translateImage(file!.files.single.bytes);
-        String x= base64.encode(file.files.single.bytes as Uint8List);
-        
-        print(x);
+        String x = base64.encode(file!.files.single.bytes as Uint8List);
+        futureTranslation = translateImage(x);
+
+        // print(x);
         return file.files.single.bytes as Uint8List;
       });
     });
@@ -105,8 +104,11 @@ class _translatepageState extends State<translatepage> {
     if (!isFileSelected) {
       return TranslationResponse.fromJson(jsonDecode('{"title": ""}'));
     } else {
-      final response = await http
-          .get(Uri.parse('https://jsonplaceholder.typicode.com/albums/1'));
+      final response = await http.post(
+          Uri.parse(
+              'https://PureStarchyMouse.michaelkhalil2.repl.co/translate'),
+          headers: {"Content-Type": "application/json"},
+          body: json.encode({"image": imageBytes}));
 
       if (response.statusCode == 200) {
         return TranslationResponse.fromJson(jsonDecode(response.body));
@@ -145,41 +147,45 @@ class _translatepageState extends State<translatepage> {
                 children: [
                   const SizedBox(height: 150),
                   ButtonTheme(
-                minWidth: 50.0,
-                height: 80.0,
-                // ignore: deprecated_member_use
-                child:RaisedButton(
-                  onPressed: () {
-                      pickImage();
-                    },
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
-              padding: const EdgeInsets.all(0.0),
-              child: Ink(
-                decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                      colors: <Color>[
-                        Color(0xFFF8B232),
-                        Color(0xFFF8B232),
-                        // Color(0xFFFFFFFF),
-                      ],
-                    ),
-      borderRadius: BorderRadius.all(Radius.circular(20.0)),
-    ),
-    child: Container(
-      constraints: const BoxConstraints(minWidth: 30.0, minHeight: 80.0), // min sizes for Material buttons
-      alignment: Alignment.center,
-      width: 200,
-      height: 10,
-      child:  Text(
-        'Image Translation',
-        textAlign: TextAlign.center,
-        style:GoogleFonts.courgette(fontSize: 18),
-      ),
-    ),
-  ),
-)
-              ),
-                 
+                      minWidth: 50.0,
+                      height: 80.0,
+                      // ignore: deprecated_member_use
+                      child: RaisedButton(
+                        onPressed: () {
+                          pickImage();
+                        },
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        padding: const EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFFF8B232),
+                                Color(0xFFF8B232),
+                                // Color(0xFFFFFFFF),
+                              ],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 30.0,
+                                minHeight:
+                                    80.0), // min sizes for Material buttons
+                            alignment: Alignment.center,
+                            width: 200,
+                            height: 10,
+                            child: Text(
+                              'Image Translation',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.courgette(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      )),
+
                   // RaisedButton(
                   //   child: Text('Try a sample image'),
                   //   onPressed: () {
