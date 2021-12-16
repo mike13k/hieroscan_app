@@ -27,7 +27,7 @@ class TranslationResponse {
 
   factory TranslationResponse.fromJson(Map<String, dynamic> json) {
     return TranslationResponse(
-      translation: json['title'],
+      translation: json['translation'],
     );
   }
 }
@@ -102,7 +102,7 @@ class _translatepageState extends State<translatepage> {
 
   Future<TranslationResponse> translateImage(imageBytes) async {
     if (!isFileSelected) {
-      return TranslationResponse.fromJson(jsonDecode('{"title": ""}'));
+      return TranslationResponse.fromJson(jsonDecode('{"translation": ""}'));
     } else {
       final response = await http.post(
           Uri.parse(
@@ -113,7 +113,8 @@ class _translatepageState extends State<translatepage> {
       if (response.statusCode == 200) {
         return TranslationResponse.fromJson(jsonDecode(response.body));
       } else {
-        return TranslationResponse.fromJson(jsonDecode('{"title": "Failed"}'));
+        return TranslationResponse.fromJson(
+            jsonDecode('{"translation": "Failed"}'));
       }
     }
   }
