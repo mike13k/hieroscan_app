@@ -4,6 +4,7 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/images.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:transparent_image/transparent_image.dart';
@@ -146,7 +147,49 @@ class _translatepageState extends State<translatepage> {
             Center(
               child: Column(
                 children: [
-                  const SizedBox(height: 150),
+                    const SizedBox(height: 100),
+                  ButtonTheme(
+                      minWidth: 50.0,
+                      height: 80.0,
+                      // ignore: deprecated_member_use
+                      child: RaisedButton(
+                        onPressed: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context) { return images(); }),
+                      )},
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        padding: const EdgeInsets.all(0.0),
+                        child: Ink(
+                          decoration: const BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: <Color>[
+                                Color(0xFFF8B232),
+                                Color(0xFFF8B232),
+                                // Color(0xFFFFFFFF),
+                              ],
+                            ),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(20.0)),
+                          ),
+                          child: Container(
+                            constraints: const BoxConstraints(
+                                minWidth: 30.0,
+                                minHeight:
+                                    80.0), // min sizes for Material buttons
+                            alignment: Alignment.center,
+                            width: 200,
+                            height: 10,
+                            child: Text(
+                              'Choose an Image',
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.courgette(fontSize: 18),
+                            ),
+                          ),
+                        ),
+                      )),
+                  const SizedBox(height: 50),
                   ButtonTheme(
                       minWidth: 50.0,
                       height: 80.0,
@@ -186,6 +229,7 @@ class _translatepageState extends State<translatepage> {
                           ),
                         ),
                       )),
+                      
 
                   // RaisedButton(
                   //   child: Text('Try a sample image'),
