@@ -185,7 +185,7 @@ class _translatepageState extends State<translatepage> {
                             width: 200,
                             height: 10,
                             child: Text(
-                              'Choose an Image',
+                              'Gallery',
                               textAlign: TextAlign.center,
                               style: GoogleFonts.courgette(fontSize: 18),
                             ),

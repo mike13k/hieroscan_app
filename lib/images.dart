@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/image1.dart';
+import 'package:flutter_application_1/image2.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:flutter_application_1/image3.dart';
 
 
 class images extends StatefulWidget {
@@ -39,7 +42,11 @@ class _imagesState extends State<images> {
                 Center(
                   
   child: InkWell(
-    onTap: (){ } ,
+    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context) { return image1(); }),
+                      )}, 
     child: Stack(
       children: <Widget>[
         Image.asset("google.jpg",width: 150,
@@ -48,9 +55,14 @@ class _imagesState extends State<images> {
     ),
   ),
 ),
+const SizedBox(height: 30),
 Center(
   child: InkWell(
-    onTap: (){ } ,
+    onTap: () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context) { return image2(); }),
+                      )} ,
     child: Stack(
       children: <Widget>[
         Image.asset("google.jpg",width: 150,
@@ -59,9 +71,15 @@ Center(
     ),
   ),
 ),
+const SizedBox(height: 30),
+
 Center(
   child: InkWell(
-    onTap: (){ } ,
+    onTap:  () => {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (BuildContext context) { return image3(); }),
+                      )} ,
     child: Stack(
       children: <Widget>[
         Image.asset("google.jpg",width: 150,
