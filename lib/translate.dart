@@ -21,73 +21,69 @@ class translatepage extends StatefulWidget {
 
 class TranslationResponse {
   final String translation;
+  final String image;
 
-  TranslationResponse({
-    required this.translation,
-  });
+  TranslationResponse({required this.translation, required this.image});
 
   factory TranslationResponse.fromJson(Map<String, dynamic> json) {
     return TranslationResponse(
-      translation: json['translation'],
-    );
+        translation: json['translation'], image: json['image']);
   }
 }
 
 class _translatepageState extends State<translatepage> {
   // the text entered by the user
   String enteredText = '';
+
+  // transparent image as a default
   Future<Uint8List> imageFile = Future(() {
     return kTransparentImage;
   });
+
+  // furture translation from api
   late Future<TranslationResponse> futureTranslation;
+
+  // true if is file selected by user
   bool isFileSelected = false;
-  // bool isRandomImage = false;
-  // List imagePool = ['logo.jpg', 'wall.jpg'];
+
   @override
   void initState() {
     super.initState();
-    futureTranslation = translateImage(null);
+    futureTranslation = translateImageRequest(null);
   }
 
-  // Future<Uint8List> _readFileByte(String filePath) async {
-  //   File file = await rootBundle.load('assets/logo.jpg') as File;
-  //   Uint8List bytes = Uint8List.fromList([]);
-  //   await file.readAsBytes().then((value) {
-  //     bytes = Uint8List.fromList(value);
-  //   });
-  //   return bytes;
-  // }
-
-  pickImage() async {
-    // if (isRandomImage) {
-    //   isRandomImage = false;
-    //   final _random = new Random();
-    //   var element = imagePool[_random.nextInt(imagePool.length)];
-    //   _readFileByte('assets/' + element).then((value) => setState(() {
-    //         imageFile = Future(() {
-    //           futureTranslation = translateImage(value);
-    //           return value as Uint8List;
-    //         });
-    //       }));
-    //   // var image = await rootBundle.load('assets/logo.jpg');
-
-    // } else {
+  // Triggered on pick image button click
+  onPickImageClick() async {
     var file = await FilePicker.platform
         .pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'png']);
     isFileSelected = true;
-    setState(() {
-      imageFile = Future(() {
-        String x = base64.encode(file!.files.single.bytes as Uint8List);
-        futureTranslation = translateImage(x);
 
-        // print(x);
-        return file.files.single.bytes as Uint8List;
-      });
-    });
-    // }
+    var image = file!.files.single.bytes as Uint8List;
+
+    updateImage(image);
+    translateImage(image);
   }
 
-  Widget showImage() {
+  // Updates the image display. Fetches and updates the translation display
+  translateImage(image) {
+    setState(() {
+      String encodedImage = base64.encode(image);
+
+      // Translate and update translation using API
+      futureTranslation = translateImageRequest(encodedImage);
+    });
+  }
+
+  // Upddate the image display
+  updateImage(image) {
+    setState(() {
+      imageFile = Future(() {
+        return image;
+      });
+    });
+  }
+
+  Widget renderImageWidget() {
     return FutureBuilder<Uint8List>(
       future: imageFile,
       builder: (BuildContext context, AsyncSnapshot<Uint8List> snapshot) {
@@ -101,22 +97,26 @@ class _translatepageState extends State<translatepage> {
     );
   }
 
-  Future<TranslationResponse> translateImage(imageBytes) async {
+  Future<TranslationResponse> translateImageRequest(imageBytes) async {
     if (!isFileSelected) {
-      return TranslationResponse.fromJson(jsonDecode('{"translation": ""}'));
-    } else {
-      final response = await http.post(
-          Uri.parse(
-              'https://PureStarchyMouse.michaelkhalil2.repl.co/translate'),
-          headers: {"Content-Type": "application/json"},
-          body: json.encode({"image": imageBytes}));
+      return TranslationResponse.fromJson(
+          jsonDecode(jsonEncode({"translation": "", "image": ""})));
+    }
 
-      if (response.statusCode == 200) {
-        return TranslationResponse.fromJson(jsonDecode(response.body));
-      } else {
-        return TranslationResponse.fromJson(
-            jsonDecode('{"translation": "Failed"}'));
-      }
+    final response = await http.post(
+        Uri.parse('https://PureStarchyMouse.michaelkhalil2.repl.co/translate'),
+        headers: {"Content-Type": "application/json"},
+        body: json.encode({"image": imageBytes}));
+
+    if (response.statusCode == 200) {
+      var image = jsonDecode(response.body)['image'];
+      image = image.replaceAll("\n", "");
+
+      updateImage(base64.decode(image));
+      return TranslationResponse.fromJson(jsonDecode(response.body));
+    } else {
+      return TranslationResponse.fromJson(
+          jsonDecode('{"translation": "Failed"}'));
     }
   }
 
@@ -147,17 +147,20 @@ class _translatepageState extends State<translatepage> {
             Center(
               child: Column(
                 children: [
-                    const SizedBox(height: 100),
+                  const SizedBox(height: 100),
                   ButtonTheme(
                       minWidth: 50.0,
                       height: 80.0,
                       // ignore: deprecated_member_use
                       child: RaisedButton(
                         onPressed: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (BuildContext context) { return images(); }),
-                      )},
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (BuildContext context) {
+                              return images();
+                            }),
+                          )
+                        },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
                         padding: const EdgeInsets.all(0.0),
@@ -196,7 +199,7 @@ class _translatepageState extends State<translatepage> {
                       // ignore: deprecated_member_use
                       child: RaisedButton(
                         onPressed: () {
-                          pickImage();
+                          onPickImageClick();
                         },
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20.0)),
@@ -229,7 +232,6 @@ class _translatepageState extends State<translatepage> {
                           ),
                         ),
                       )),
-                      
 
                   // RaisedButton(
                   //   child: Text('Try a sample image'),
@@ -238,7 +240,7 @@ class _translatepageState extends State<translatepage> {
                   //     pickImage();
                   //   },
                   // ),
-                  showImage(),
+                  renderImageWidget(),
                   FutureBuilder<TranslationResponse>(
                     future: futureTranslation,
                     builder: (context, snapshot) {
