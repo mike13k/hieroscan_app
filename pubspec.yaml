@@ -70,6 +70,9 @@ flutter:
     - assets/wall.jpg
     - assets/dd.png
     - assets/google.jpg
+    - assets/test0.jpg
+    - assets/test1.jpg
+    - assets/test2.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

@@ -49,8 +49,8 @@ class _imagesState extends State<images> {
                       )}, 
     child: Stack(
       children: <Widget>[
-        Image.asset("google.jpg",width: 150,
-                                        height: 150,),
+        Image.asset("test0.jpg",width: 200,
+                                        height: 200,),
       ],
     ),
   ),
@@ -65,8 +65,8 @@ Center(
                       )} ,
     child: Stack(
       children: <Widget>[
-        Image.asset("google.jpg",width: 150,
-                                        height: 150,),
+        Image.asset("test1.jpg",width: 200,
+                                        height: 200,),
       ],
     ),
   ),
@@ -82,8 +82,8 @@ Center(
                       )} ,
     child: Stack(
       children: <Widget>[
-        Image.asset("google.jpg",width: 150,
-                                        height: 150,),
+        Image.asset("test2.jpg",width: 200,
+                                        height: 200,),
       ],
     ),
   ),
