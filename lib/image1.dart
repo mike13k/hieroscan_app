@@ -42,14 +42,15 @@ class _image1State extends State<image1> {
     onTap: (){ } ,
     child: Stack(
       children: <Widget>[
-        Image.asset("google.jpg",width: 150,
-                                        height: 150,),
+        Image.asset("classification0.png",width: 400,
+                                        height: 400,),
       ],
     ),
   ),
 
 ),
-Center(child: Text("jsbcibsc", style:GoogleFonts.courgette( textStyle:TextStyle(color: Color(0xFFF8B232),),),),)
+SizedBox(height: 30,),
+Center(child: Text("and the parts of the two lands of bread to the water', 'and he will high steward rensi son of bread', 'you turn them to the time of nun', 'King of Upper Egypt in Buto", style:GoogleFonts.courgette( textStyle:TextStyle(color: Color(0xFFF8B232),),fontSize: 20),),)
 
 
 

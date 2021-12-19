@@ -42,14 +42,16 @@ class _image2State extends State<image2> {
     onTap: (){ } ,
     child: Stack(
       children: <Widget>[
-        Image.asset("google.jpg",width: 150,
-                                        height: 150,),
+        Image.asset("classification1.png",width: 400,
+                                        height: 400,),
       ],
     ),
   ),
 
 ),
-Center(child: Text("jsbcibsc", style:GoogleFonts.courgette( textStyle:TextStyle(color: Color(0xFFF8B232),),),),)
+SizedBox(height: 30,),
+
+Center(child: Text("'and the parts of the two lands of the sea to the sea', 'and the fish of the waterside speak to come', 'and the parts of upper egypt of lower egypt snofru the justified', 'and the parts of the two sides kneeling to the officials who have been folded.', 'and fish of the roads to the sea'", style:GoogleFonts.courgette( textStyle:TextStyle(color: Color(0xFFF8B232),),fontSize: 20),),)
 
 
 

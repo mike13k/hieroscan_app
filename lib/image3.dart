@@ -42,14 +42,16 @@ class _image3State extends State<image3> {
     onTap: (){ } ,
     child: Stack(
       children: <Widget>[
-        Image.asset("google.jpg",width: 150,
-                                        height: 150,),
+        Image.asset("classification2.png",width: 400,
+                                        height: 400,),
       ],
     ),
   ),
 
 ),
-Center(child: Text("jsbcibsc", style:GoogleFonts.courgette( textStyle:TextStyle(color: Color(0xFFF8B232),),),),)
+SizedBox(height: 30,),
+
+Center(child: Text("and upper valleys to the parts of bread of the two guards to fetch nemtinakht', 'and they had the parts of the water of the herself', 'who attacks the parts of upper egypt of punt', 'do not vent your bread', 'second month of the season of growing day the morning', 'and the parts of the two sides kneeling to the parts of the justified had been taken from the justified', 'and to the road of a servant of the parts of the two fish canals", style:GoogleFonts.courgette( textStyle:TextStyle(color: Color(0xFFF8B232),),fontSize: 20),),)
 
 
 
