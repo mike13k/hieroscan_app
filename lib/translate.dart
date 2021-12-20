@@ -21,13 +21,19 @@ class translatepage extends StatefulWidget {
 
 class TranslationResponse {
   final String translation;
+  final String transliteration;
   final String image;
 
-  TranslationResponse({required this.translation, required this.image});
+  TranslationResponse(
+      {required this.translation,
+      required this.transliteration,
+      required this.image});
 
   factory TranslationResponse.fromJson(Map<String, dynamic> json) {
     return TranslationResponse(
-        translation: json['translation'], image: json['image']);
+        translation: json['translation'],
+        transliteration: json['transliteration'],
+        image: json['image']);
   }
 }
 
@@ -58,10 +64,12 @@ class _translatepageState extends State<translatepage> {
         .pickFiles(type: FileType.custom, allowedExtensions: ['jpg', 'png']);
     isFileSelected = true;
 
-    var image = file!.files.single.bytes as Uint8List;
+    if (file != null) {
+      var image = file.files.single.bytes as Uint8List;
 
-    updateImage(image);
-    translateImage(image);
+      updateImage(image);
+      translateImage(image);
+    }
   }
 
   // Updates the image display. Fetches and updates the translation display
@@ -99,8 +107,8 @@ class _translatepageState extends State<translatepage> {
 
   Future<TranslationResponse> translateImageRequest(imageBytes) async {
     if (!isFileSelected) {
-      return TranslationResponse.fromJson(
-          jsonDecode(jsonEncode({"translation": "", "image": ""})));
+      return TranslationResponse.fromJson(jsonDecode(
+          jsonEncode({"translation": "", "transliteration": "", "image": ""})));
     }
 
     final response = await http.post(
@@ -241,6 +249,24 @@ class _translatepageState extends State<translatepage> {
                   //   },
                   // ),
                   renderImageWidget(),
+                  Padding(
+                      padding: EdgeInsets.fromLTRB(0, 20, 0, 20),
+                      child: FutureBuilder<TranslationResponse>(
+                        future: futureTranslation,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return Text(snapshot.data!.transliteration,
+                                style: GoogleFonts.courgette(
+                                    textStyle: TextStyle(
+                                        color: Color(0xFFF8B232),
+                                        fontSize: 24)));
+                          } else if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          }
+                          // By default, show a loading spinner.
+                          return const CircularProgressIndicator();
+                        },
+                      )),
                   FutureBuilder<TranslationResponse>(
                     future: futureTranslation,
                     builder: (context, snapshot) {
